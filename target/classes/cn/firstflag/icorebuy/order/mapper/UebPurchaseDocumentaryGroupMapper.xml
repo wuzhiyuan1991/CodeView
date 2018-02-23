@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.firstflag.icorebuy.order.dao.UebPurchaseDocumentaryGroupDao">
+
+    <resultMap type="UebPurchaseDocumentaryGroup" id="UebPurchaseDocumentaryGroup">
+        <id column="ID" property="id" javaType="java.lang.Integer"/>
+        <result column="GROUP_NAME" property="groupName" javaType="java.lang.String"/>
+        <result column="DEPT_ID" property="deptId" javaType="java.lang.Integer"/>
+        <result column="GROUP_LEADER" property="groupLeader" javaType="java.lang.Integer"/>
+        <result column="GROUP_MEMBERS" property="groupMembers" javaType="java.lang.String"/>
+        <result column="CREATE_USER_ID" property="createUserId" javaType="java.lang.Integer"/>
+        <result column="CREATE_TIME" property="createTime" javaType="java.util.Date"/>
+        <result column="MODIFY_USER_ID" property="modifyUserId" javaType="java.lang.Integer"/>
+        <result column="MODIFY_TIME" property="modifyTime" javaType="java.util.Date"/>
+        <result column="IS_DEL" property="isDel" javaType="java.lang.Boolean"/>
+    </resultMap>
+
+    <!-- 全部字段，一般用于明细查询 -->
+    <sql id="AllColumnlist">
+    ID, GROUP_NAME, DEPT_ID, GROUP_LEADER, GROUP_MEMBERS, CREATE_USER_ID, CREATE_TIME, 
+MODIFY_USER_ID, MODIFY_TIME, IS_DEL
+    </sql>
+
+    <!-- 常见字段，一般用于列表查询，可能不包含备注之类的字段 -->
+    <sql id="CommonColumnlist">
+    ID, GROUP_NAME, DEPT_ID, GROUP_LEADER, CREATE_USER_ID, CREATE_TIME, 
+MODIFY_USER_ID, MODIFY_TIME, IS_DEL
+    </sql>
+
+    <insert id="add" parameterType="UebPurchaseDocumentaryGroup" useGeneratedKeys="true" keyProperty="id">
+        insert into ueb_purchase_documentary_group(
+            <if test="id!=null">
+                ID,
+            </if>
+            GROUP_NAME,
+            DEPT_ID,
+            GROUP_LEADER,
+            GROUP_MEMBERS,
+            CREATE_USER_ID,
+            CREATE_TIME,
+            MODIFY_USER_ID,
+            MODIFY_TIME,
+            IS_DEL
+        ) values (
+            <if test="id!=null">
+                #{id},
+            </if>
+            #{groupName},
+            #{deptId},
+            #{groupLeader},
+            #{groupMembers},
+            #{createUserId},
+            #{createTime},
+            #{modifyUserId},
+            #{modifyTime},
+            #{isDel}
+        )
+    </insert>
+
+    <update id="update" parameterType="UebPurchaseDocumentaryGroup">
+        update ueb_purchase_documentary_group
+        <set>
+            <if test="groupName!=null and groupName!=''">
+                GROUP_NAME=#{groupName},
+            </if>
+            <if test="deptId!=null ">
+                DEPT_ID=#{deptId},
+            </if>
+            <if test="groupLeader!=null ">
+                GROUP_LEADER=#{groupLeader},
+            </if>
+            <if test="groupMembers!=null and groupMembers!=''">
+                GROUP_MEMBERS=#{groupMembers},
+            </if>
+            <if test="createUserId!=null ">
+                CREATE_USER_ID=#{createUserId},
+            </if>
+            <if test="createTime!=null ">
+                CREATE_TIME=#{createTime},
+            </if>
+            <if test="modifyUserId!=null ">
+                MODIFY_USER_ID=#{modifyUserId},
+            </if>
+            <if test="modifyTime!=null ">
+                MODIFY_TIME=#{modifyTime},
+            </if>
+            <if test="isDel!=null ">
+                IS_DEL=#{isDel},
+            </if>
+        </set>
+        <where>
+            AND ID=#{id}
+        </where>
+    </update>
+
+    <delete id="delete">
+        delete from ueb_purchase_documentary_group
+        <where>
+            ID=#{0}
+        </where>
+    </delete>
+
+    <delete id="deleteByIds">
+        delete from ueb_purchase_documentary_group
+        <where>
+            <foreach item="item" index="index" collection="array" open="("
+                     separator=" OR " close=")">ID = #{item}</foreach>
+        </where>
+    </delete>
+
+    <select id="get" resultMap="UebPurchaseDocumentaryGroup">
+        select
+        <include refid="AllColumnlist"/>
+        from ueb_purchase_documentary_group
+        <where>
+            ID=#{0}
+        </where>
+    </select>
+
+    <select id="getByIds" resultMap="UebPurchaseDocumentaryGroup">
+        select
+        <include refid="AllColumnlist"/>
+        from ueb_purchase_documentary_group
+        <where>
+            <foreach item="item" index="index" collection="array" open="(" separator=" OR "
+             close=")">ID = #{item}</foreach>
+        </where>
+    </select>
+
+</mapper>
